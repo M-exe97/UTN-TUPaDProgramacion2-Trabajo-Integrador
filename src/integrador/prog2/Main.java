@@ -39,7 +39,7 @@ public class Main {
             System.out.println("3. Usuarios");
             System.out.println("4. Pedidos");
             System.out.println("0. Salir");
-            System.out.println("Seleccione: ");
+            System.out.print("Seleccione: ");
 
             opcion = scanner.nextLine();
 
@@ -76,7 +76,7 @@ public class Main {
             System.out.println("3. Editar categoria");
             System.out.println("4. Eliminar categoria");
             System.out.println("0. Volver al menu principal");
-            System.out.println("Seleccione: ");
+            System.out.print("Seleccione: ");
 
             opcion = scanner.nextLine();
 
@@ -108,9 +108,7 @@ public class Main {
                     break;
                 case "3":
                     System.out.println("\n=== EDITAR CATEGORIA ===");
-                    System.out.println("Ingresa el ID de la categoria a editar: ");
-                    String idEditarEntrada = scanner.nextLine();
-                    Long idEditar = Long.parseLong(idEditarEntrada);
+                    Long idEditar = leerLong(scanner, "Ingresa el ID de la categoria a editar: ");
                     Categoria categoriaEditar = categoriaService.buscarPorId(idEditar);
 
                     if (categoriaEditar == null || categoriaEditar.isEliminado()) {
@@ -135,9 +133,7 @@ public class Main {
                     break;
                 case "4":
                     System.out.println("\n=== ELIMINAR CATEGORIA ===");
-                    System.out.println("Ingresa el ID de la categoria a eliminar: ");
-                    String idEliminarEntrada = scanner.nextLine();
-                    Long idEliminar = Long.parseLong(idEliminarEntrada);
+                    Long idEliminar = leerLong(scanner, "Ingresa el ID de la categoria a eliminar: ");
                     Categoria categoriaEliminar = categoriaService.buscarPorId(idEliminar);
 
                     if (categoriaEliminar == null || categoriaEliminar.isEliminado()) {
@@ -171,7 +167,7 @@ public class Main {
             System.out.println("3. Editar usuario");
             System.out.println("4. Eliminar usuario");
             System.out.println("0. Volver al menu principal");
-            System.out.println("Seleccione: ");
+            System.out.print("Seleccione: ");
 
             opcion = scanner.nextLine();
 
@@ -216,9 +212,7 @@ public class Main {
                     break;
                 case "3":
                     System.out.println("\n=== EDITAR USUARIO ===");
-                    System.out.println("Ingresa el ID del usuario a editar: ");
-                    String idEditarEntrada = scanner.nextLine();
-                    Long idEditar = Long.parseLong(idEditarEntrada);
+                    Long idEditar = leerLong(scanner, "Ingresa el ID del usuario a editar: ");
                     Usuario usuarioEditar = usuarioService.buscarPorId(idEditar);
 
                     if (usuarioEditar == null || usuarioEditar.isEliminado()) {
@@ -257,9 +251,7 @@ public class Main {
                     break;
                 case "4":
                     System.out.println("\n=== ELIMINAR USUARIO");
-                    System.out.println("Ingresa el ID del usuario a eliminar: ");
-                    String idEliminarEntrada = scanner.nextLine();
-                    Long idEliminar = Long.parseLong(idEliminarEntrada);
+                    Long idEliminar = leerLong(scanner, "Ingresa el ID del usuario a eliminar: ");
                     Usuario usuarioEliminar = usuarioService.buscarPorId(idEliminar);
 
                     if (usuarioEliminar == null || usuarioEliminar.isEliminado()) {
@@ -294,7 +286,7 @@ public class Main {
             System.out.println("3. Editar producto");
             System.out.println("4. Eliminar producto");
             System.out.println("0. Volver al menu principal");
-            System.out.println("Seleccione: ");
+            System.out.print("Seleccione: ");
 
             opcion = scanner.nextLine();
 
@@ -316,14 +308,11 @@ public class Main {
                     String nombre = scanner.nextLine();
                     System.out.println("Ingresa la descripcion: ");
                     String descripcion = scanner.nextLine();
-                    System.out.println("Ingresa el precio: ");
-                    double precio = Double.parseDouble(scanner.nextLine());
-                    System.out.println("Ingresa el stock inicial: ");
-                    int stock = Integer.parseInt(scanner.nextLine());
+                    double precio = leerDouble(scanner, "Ingresa el precio: ");
+                    int stock = leerEntero(scanner, "Ingresa el stock inicial: ");
                     System.out.println("Ingresa la ruta o nombre de la imagen: ");
                     String imagen = scanner.nextLine();
-                    System.out.println("Ingresa el ID de la categoria: ");
-                    Long idCategoria = Long.parseLong(scanner.nextLine());
+                    Long idCategoria = leerLong(scanner, "Ingresa el ID de la categoria: ");
                     Categoria categoria = categoriaService.buscarPorId(idCategoria);
 
                     if (nombre.isEmpty()) {
@@ -337,8 +326,7 @@ public class Main {
                     break;
                 case "3":
                     System.out.println("\n=== EDITAR PRODUCTO ===");
-                    System.out.println("Ingresa el ID del producto a editar: ");
-                    Long idEditar = Long.parseLong(scanner.nextLine());
+                    Long idEditar = leerLong(scanner, "Ingresa el ID del producto a editar: ");
                     Producto productoEditar = productoService.buscarPorId(idEditar);
 
                     if (productoEditar == null || productoEditar.isEliminado()) {
@@ -379,8 +367,7 @@ public class Main {
                     break;
                 case "4":
                     System.out.println("\n=== ELIMINAR PRODUCTO ===");
-                    System.out.println("Ingresa el ID del producto a eliminar: ");
-                    Long idEliminar = Long.parseLong(scanner.nextLine());
+                    Long idEliminar = leerLong(scanner, "Ingresa el ID del producto a eliminar: ");
                     Producto productoEliminar = productoService.buscarPorId(idEliminar);
 
                     if (productoEliminar == null || productoEliminar.isEliminado()) {
@@ -415,7 +402,7 @@ public class Main {
             System.out.println("3. Editar estado y pago");
             System.out.println("4. Eliminar pedido");
             System.out.println("0. Volver al menu principal");
-            System.out.println("Seleccione: ");
+            System.out.print("Seleccione: ");
 
             opcion = scanner.nextLine();
 
@@ -438,8 +425,7 @@ public class Main {
                     break;
                 case "2":
                     System.out.println("\n=== NUEVO PEDIDO ===");
-                    System.out.println("Ingresa el ID del Usuario (Cliente): ");
-                    Long idUsuario = Long.parseLong(scanner.nextLine());
+                    Long idUsuario = leerLong(scanner, "Ingresa el ID del usuario(Cliente): ");
                     Usuario cliente = usuarioService.buscarPorId(idUsuario);
                     if (cliente == null || cliente.isEliminado()) {
                         System.out.println("Error: El ID no existe o el usuario ya fue eliminado");
@@ -450,15 +436,13 @@ public class Main {
 
                     String continuar = "S";
                     while (continuar.equalsIgnoreCase("S")) {
-                        System.out.println("Ingresa el ID del producto: ");
-                        Long idProducto = Long.parseLong(scanner.nextLine());
+                        Long idProducto = leerLong(scanner, "Ingresa el ID del producto: ");
                         Producto producto = productoService.buscarPorId(idProducto);
                         if (producto == null || producto.isEliminado()) {
                             System.out.println("Error: El ID no existe o el producto ya fue eliminado");
                         } else {
                             System.out.println("Producto seleccionado: " + producto.getNombre() + "\nPrecio: $" + producto.getPrecio());
-                            System.out.println("Ingresa la cantidad: ");
-                            int cantidad = Integer.parseInt(scanner.nextLine());
+                            int cantidad = leerEntero(scanner, "Ingresa la cantidad: ");
                             idProductos.add(idProducto);
                             cantidades.add(cantidad);
                             System.out.println("Producto añadido al carrito");
@@ -488,8 +472,7 @@ public class Main {
                     break;
                 case "3":
                     System.out.println("\n=== ACTUALIZAR ESTADO Y PAGO ===");
-                    System.out.println("Ingresa el ID del pedido a modificar: ");
-                    Long idPedido = Long.parseLong(scanner.nextLine());
+                    Long idPedido = leerLong(scanner, "Ingresa el ID del pedido: ");
 
                     Pedido pedido = pedidoService.buscarPorId(idPedido);
                     if (pedido == null || pedido.isEliminado()) {
@@ -529,8 +512,7 @@ public class Main {
                     break;
                 case "4":
                     System.out.println("\n=== ELIMINAR PEDIDO ===");
-                    System.out.println("Ingresa el ID del pedido a eliminar: ");
-                    Long idEliminar = Long.parseLong(scanner.nextLine());
+                    Long idEliminar = leerLong(scanner, "Ingresa el ID del pedido a eliminar: ");
 
                     Pedido pedidoEliminar = pedidoService.buscarPorId(idEliminar);
                     if (pedidoEliminar == null || pedidoEliminar.isEliminado()) {
@@ -552,6 +534,39 @@ public class Main {
                 default:
                     System.out.println("Opcion invalida");
                     break;
+            }
+        }
+    }
+
+    private static int leerEntero(Scanner scanner, String mensaje) {
+        while (true) {
+            try {
+                System.out.print(mensaje);
+                return Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Tenes que ingresar un numero entero valido, intenta nuevamente.");
+            }
+        }
+    }
+
+    private static double leerDouble(Scanner scanner, String mensaje) {
+        while (true) {
+            try {
+                System.out.print(mensaje);
+                return Double.parseDouble(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Tenes que ingresar un numero decimal valido (Ejemplo: 550.50, intenta nuevamente.");
+            }
+        }
+    }
+
+    private static Long leerLong(Scanner scanner, String mensaje) {
+        while (true) {
+            try {
+                System.out.print(mensaje);
+                return Long.parseLong(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Error: ID invalido. Tenes que ingresar un numero entero valido, intenta nuevamente.");
             }
         }
     }
