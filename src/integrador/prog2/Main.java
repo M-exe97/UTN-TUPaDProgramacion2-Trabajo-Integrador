@@ -1,3 +1,5 @@
+package integrador.prog2;
+
 /**
  *
  * @author .exe
