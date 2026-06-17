@@ -1,0 +1,8 @@
+/target/
+/build/
+/nbproject/private/
+/dist/
+*.class
+.DS_Store
+/.idea/
+*.iml
