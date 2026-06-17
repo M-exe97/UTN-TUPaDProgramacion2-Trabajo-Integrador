@@ -16,14 +16,12 @@ public class PedidoService {
     private final ProductoService productoService;
     private final UsuarioService usuarioService;
     private long ultimoIdPedido;
-    private long ultimoIdDetalle;
 
     public PedidoService(ProductoService productoService, UsuarioService usuarioService) {
         this.pedidos = new ArrayList<>();
         this.productoService = productoService;
         this.usuarioService = usuarioService;
         this.ultimoIdPedido = 0;
-        this.ultimoIdDetalle = 0;
     }
 
     public Pedido crearPedido(Long idUsuario, List<Long> idProductos, List<Integer> cantidades, FormaPago formaPago) {
@@ -31,28 +29,32 @@ public class PedidoService {
         if (usuario == null || usuario.isEliminado()) {
             return null;
         }
-
         this.ultimoIdPedido++;
         Pedido nuevoPedido = new Pedido(this.ultimoIdPedido, LocalDate.now(), Estado.PENDIENTE, 0.0, formaPago, usuario);
-        double totalAcumulado = 0.0;
-
         for (int i = 0; i < idProductos.size(); i++) {
             Long idProducto = idProductos.get(i);
             int cantidad = cantidades.get(i);
-
-            Producto producto = productoService.buscarPorId(idProducto);
-            if (producto != null && !producto.isEliminado()) {
-                this.ultimoIdDetalle++;
-                double subtotal = cantidad * producto.getPrecio();
-                DetallePedido detalle = new DetallePedido(this.ultimoIdDetalle, cantidad, subtotal, producto);
-                nuevoPedido.getDetalles().add(detalle);
-                totalAcumulado += subtotal;
+            Producto producto = this.productoService.buscarPorId(idProducto);
+            if (producto != null && !producto.isEliminado() && producto.isDisponible()) {
+                if (producto.getStock() >= cantidad) {
+                    int nuevoStock = producto.getStock() - cantidad;
+                    boolean disponible = nuevoStock > 0;
+                    this.productoService.editar(producto.getId(), producto.getNombre(), producto.getDescripcion(), producto.getPrecio(), nuevoStock, producto.getImagen(), disponible, producto.getCategoria());
+                    nuevoPedido.addDetallePedido(cantidad, producto.getPrecio(), producto);
+                } else {
+                    System.out.println("Error: No hay suficiente stock para " + producto.getNombre());
+                    this.ultimoIdPedido--;
+                    return null;
+                }
             }
         }
+        if (!nuevoPedido.getDetalles().isEmpty()) {
+            this.pedidos.add(nuevoPedido);
+            return nuevoPedido;
+        }
+        this.ultimoIdPedido--;
+        return null;
 
-        nuevoPedido.setTotal(totalAcumulado);
-        this.pedidos.add(nuevoPedido);
-        return nuevoPedido;
     }
 
     public List<Pedido> listarActivos() {
