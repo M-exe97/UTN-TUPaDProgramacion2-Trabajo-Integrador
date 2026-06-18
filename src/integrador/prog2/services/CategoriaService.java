@@ -2,6 +2,7 @@ package integrador.prog2.services;
 
 import integrador.prog2.entities.Categoria;
 import integrador.prog2.entities.Producto;
+import integrador.prog2.exception.CategoriaEnUsoException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,20 +56,17 @@ public class CategoriaService {
         return false;
     }
 
-    public boolean eliminar(Long id) {
+    public void eliminar(Long id) throws CategoriaEnUsoException{
         Categoria encontrada = buscarPorId(id);
         if (encontrada != null && !encontrada.isEliminado()) {
             List<Producto> productosExistentes = productoService.listar();
             for (int i = 0; i < productosExistentes.size(); i++) {
                 Producto producto = productosExistentes.get(i);
                 if (!producto.isEliminado() && producto.getCategoria().getId().equals(id)) {
-                    System.out.println("Error: No se puede eliminar la categoria " + encontrada.getNombre() + " porque tiene productos asociados");
-                    return false;
+                    throw new CategoriaEnUsoException("No se puede eliminar la categoria " + encontrada.getNombre() + " porque tiene productos asociados activos");
                 }
             }
             encontrada.setEliminado(true);
-            return true;
         }
-        return false;
     }
 }

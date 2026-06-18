@@ -1,11 +1,11 @@
 package integrador.prog2.services;
 
-import integrador.prog2.entities.DetallePedido;
 import integrador.prog2.entities.Pedido;
 import integrador.prog2.entities.Producto;
 import integrador.prog2.entities.Usuario;
 import integrador.prog2.enums.Estado;
 import integrador.prog2.enums.FormaPago;
+import integrador.prog2.exception.StockInsuficienteException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class PedidoService {
         this.ultimoIdPedido = 0;
     }
 
-    public Pedido crearPedido(Long idUsuario, List<Long> idProductos, List<Integer> cantidades, FormaPago formaPago) {
+    public Pedido crearPedido(Long idUsuario, List<Long> idProductos, List<Integer> cantidades, FormaPago formaPago) throws StockInsuficienteException{
         Usuario usuario = this.usuarioService.buscarPorId(idUsuario);
         if (usuario == null || usuario.isEliminado()) {
             return null;
@@ -42,9 +42,8 @@ public class PedidoService {
                     this.productoService.editar(producto.getId(), producto.getNombre(), producto.getDescripcion(), producto.getPrecio(), nuevoStock, producto.getImagen(), disponible, producto.getCategoria());
                     nuevoPedido.addDetallePedido(cantidad, producto.getPrecio(), producto);
                 } else {
-                    System.out.println("Error: No hay suficiente stock para " + producto.getNombre());
                     this.ultimoIdPedido--;
-                    return null;
+                    throw new StockInsuficienteException("Stock insuficiente para el producto: " + producto.getNombre());
                 }
             }
         }

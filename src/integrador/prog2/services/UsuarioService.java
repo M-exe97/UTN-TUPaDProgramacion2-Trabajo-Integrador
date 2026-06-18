@@ -2,6 +2,7 @@ package integrador.prog2.services;
 
 import integrador.prog2.entities.Usuario;
 import integrador.prog2.enums.Rol;
+import integrador.prog2.exception.EmailDuplicadoException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +16,12 @@ public class UsuarioService {
         this.ultimoId = 0;
     }
 
-    public Usuario crear (String nombre, String apellido, String mail, String celular, String contrasenia, Rol rol) {
+    public Usuario crear (String nombre, String apellido, String mail, String celular, String contrasenia, Rol rol) throws EmailDuplicadoException{
         for (int i = 0; i < this.usuarios.size(); i++) {
             Usuario user = this.usuarios.get(i);
+
             if (!user.isEliminado() && user.getMail().equalsIgnoreCase(mail)) {
-                System.out.println("Error: Ya existe un usuario registrado con el email " + mail);
-                return null;
+                throw new EmailDuplicadoException("Ya existe un usuario registrado con el email " + mail);
             }
         }
 

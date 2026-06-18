@@ -4,6 +4,9 @@ import integrador.prog2.enums.Estado;
 import integrador.prog2.enums.Rol;
 import integrador.prog2.enums.FormaPago;
 
+import integrador.prog2.exception.CategoriaEnUsoException;
+import integrador.prog2.exception.EmailDuplicadoException;
+import integrador.prog2.exception.StockInsuficienteException;
 import integrador.prog2.services.CategoriaService;
 import integrador.prog2.services.PedidoService;
 import integrador.prog2.services.ProductoService;
@@ -143,8 +146,12 @@ public class Main {
                         String confirmacion = scanner.nextLine();
 
                         if (confirmacion.equalsIgnoreCase("S")) {
-                            categoriaService.eliminar(idEliminar);
-                            System.out.println("Categoria eliminada correctamente");
+                            try {
+                                categoriaService.eliminar((idEliminar));
+                                System.out.println("Categoria eliminada correctamente");
+                            } catch (CategoriaEnUsoException e ) {
+                                System.out.println("Error: " + e.getMessage());
+                            }
                         } else {
                             System.out.println("Operacion cancelada");
                         }
@@ -206,9 +213,13 @@ public class Main {
                     if (nombre.isEmpty() || mail.isEmpty()) {
                         System.out.println("Error: El nombre y el mail no pueden estar vacios");
                     } else {
-                        Usuario nuevo = usuarioService.crear(nombre, apellido, mail, celular, contrasenia, rolSeleccionado);
-                        if (nuevo != null) {
-                            System.out.println("Usuario creado correctamente. ID: " + nuevo.getId());
+                        try {
+                            Usuario nuevo = usuarioService.crear(nombre, apellido, mail, celular, contrasenia, rolSeleccionado);
+                            if (nuevo != null) {
+                                System.out.println("Usuario creado correctamente. ID: " + nuevo.getId());
+                            }
+                        } catch (EmailDuplicadoException e ) {
+                            System.out.println("Error al registrar: " + e.getMessage());
                         }
                     }
                     break;
@@ -462,16 +473,19 @@ public class Main {
                         } else if (pagoEntrada.equals("3")) {
                             formaPago = FormaPago.TRANSFERENCIA;
                         }
-                        Pedido nuevoPedido = pedidoService.crearPedido(idUsuario, idProductos, cantidades, formaPago);
-                        if (nuevoPedido != null) {
-                            System.out.println("Pedido creado correctamente. ID: " + nuevoPedido.getId() + "\nTotal: $" + nuevoPedido.getTotal());
-                        } else {
-                            System.out.println("Error al crear el pedido");
+                        try {
+                            Pedido nuevoPedido = pedidoService.crearPedido(idUsuario, idProductos, cantidades, formaPago);
+                            if (nuevoPedido != null) {
+                                System.out.println("Pedido creado correctamente. ID: " + nuevoPedido.getId() + "\nTotal: $" + nuevoPedido.getTotal());
+                            } else {
+                                System.out.println("Error al crear el pedido");
+                            }
+                        } catch (StockInsuficienteException e ) {
+                            System.out.println("Error en la transaccion: " + e.getMessage());
                         }
                     } else {
                         System.out.println("Pedido cancelado: No se seleccionaron productos validos");
                     }
-                    break;
                 case "3":
                     System.out.println("\n=== ACTUALIZAR ESTADO Y PAGO ===");
                     Long idPedido = leerLong(scanner, "Ingresa el ID del pedido: ");
