@@ -99,14 +99,21 @@ public class Main {
                     System.out.println("\n=== NUEVA CATEGORIA ===");
                     System.out.print("Ingresa el nombre de la categoria: ");
                     String nombre = scanner.nextLine();
-                    System.out.print("Ingresa la descripcion de la categoria: ");
+
+                    if (nombre.isEmpty()) {
+                        System.out.println("Error: El nombre no puede estar vacio");
+                        break;
+                    }
+                    System.out.print("Ingresa la descripcion: ");
                     String descripcion = scanner.nextLine();
 
-                    if (nombre.isEmpty() || descripcion.isEmpty()) {
-                        System.out.println("Error. El nombre y la descripcion no pueden estar vacios");
+                    if (descripcion.isEmpty()) {
+                        System.out.println("Error: La descripcion no puede estar vacia");
                     } else {
                         Categoria nueva = categoriaService.crear(nombre, descripcion);
-                        System.out.println("Categoria creada correctamente. ID: " + nueva.getId());
+                        if (nueva != null) {
+                            System.out.println("Categoria creada correctamente. ID: " + nueva.getId());
+                        }
                     }
                     break;
                 case "3":

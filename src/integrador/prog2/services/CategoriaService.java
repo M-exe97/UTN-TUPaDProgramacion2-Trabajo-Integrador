@@ -19,6 +19,14 @@ public class CategoriaService {
     }
 
     public Categoria crear(String nombre, String descripcion) {
+        for (int i = 0; i < this.categorias.size(); i++) {
+            Categoria cat = this.categorias.get(i);
+            if (!cat.isEliminado() && cat.getNombre().equalsIgnoreCase(nombre)) {
+                System.out.println("Error: Ya existe una categoria con el nombre " + nombre);
+                return null;
+            }
+        }
+
         this.ultimoId++;
         Categoria nueva = new Categoria(this.ultimoId, nombre, descripcion);
         this.categorias.add(nueva);
