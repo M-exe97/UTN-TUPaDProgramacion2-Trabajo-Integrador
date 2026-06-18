@@ -16,6 +16,14 @@ public class UsuarioService {
     }
 
     public Usuario crear (String nombre, String apellido, String mail, String celular, String contrasenia, Rol rol) {
+        for (int i = 0; i < this.usuarios.size(); i++) {
+            Usuario user = this.usuarios.get(i);
+            if (!user.isEliminado() && user.getMail().equalsIgnoreCase(mail)) {
+                System.out.println("Error: Ya existe un usuario registrado con el email " + mail);
+                return null;
+            }
+        }
+
         this.ultimoId++;
         Usuario nuevo = new Usuario(this.ultimoId, nombre, apellido, mail, celular, contrasenia, rol);
         this.usuarios.add(nuevo);

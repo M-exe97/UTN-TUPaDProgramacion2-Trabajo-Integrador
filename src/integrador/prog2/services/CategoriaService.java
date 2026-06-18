@@ -1,16 +1,20 @@
 package integrador.prog2.services;
 
 import integrador.prog2.entities.Categoria;
+import integrador.prog2.entities.Producto;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class CategoriaService {
     private final List<Categoria> categorias;
     private long ultimoId;
+    private ProductoService productoService;
 
-    public CategoriaService() {
+    public CategoriaService(ProductoService productoService) {
         this.categorias = new ArrayList<>();
         this.ultimoId = 0;
+        this.productoService = productoService;
     }
 
     public Categoria crear(String nombre, String descripcion) {
@@ -53,7 +57,15 @@ public class CategoriaService {
 
     public boolean eliminar(Long id) {
         Categoria encontrada = buscarPorId(id);
-        if (encontrada != null) {
+        if (encontrada != null && !encontrada.isEliminado()) {
+            List<Producto> productosExistentes = productoService.listar();
+            for (int i = 0; i < productosExistentes.size(); i++) {
+                Producto producto = productosExistentes.get(i);
+                if (!producto.isEliminado() && producto.getCategoria().getId().equals(id)) {
+                    System.out.println("Error: No se puede eliminar la categoria " + encontrada.getNombre() + " porque tiene productos asociados");
+                    return false;
+                }
+            }
             encontrada.setEliminado(true);
             return true;
         }

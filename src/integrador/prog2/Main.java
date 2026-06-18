@@ -24,8 +24,8 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        CategoriaService categoriaService = new CategoriaService();
         ProductoService productoService = new ProductoService();
+        CategoriaService categoriaService = new CategoriaService(productoService);
         UsuarioService usuarioService = new UsuarioService();
         PedidoService pedidoService = new PedidoService(productoService, usuarioService);
 
@@ -207,7 +207,9 @@ public class Main {
                         System.out.println("Error: El nombre y el mail no pueden estar vacios");
                     } else {
                         Usuario nuevo = usuarioService.crear(nombre, apellido, mail, celular, contrasenia, rolSeleccionado);
-                        System.out.println("Usuario creado correctamente. ID: " + nuevo.getId());
+                        if (nuevo != null) {
+                            System.out.println("Usuario creado correctamente. ID: " + nuevo.getId());
+                        }
                     }
                     break;
                 case "3":

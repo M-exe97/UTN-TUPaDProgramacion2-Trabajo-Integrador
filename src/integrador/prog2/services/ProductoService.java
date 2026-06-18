@@ -42,19 +42,21 @@ public class ProductoService {
         return null;
     }
 
-    public boolean editar(Long id, String nuevoNombre, String nuevaDescripcion, double nuevoPrecio, int nuevoStock, String nuevaImagen, boolean nuevaDisponibilidad, Categoria nuevaCategoria) {
+    public void editar (Long id, String nombre, String descripcion, double precio, int stock, String imagen, boolean disponible, Categoria categoria) {
         Producto encontrado = buscarPorId(id);
-        if (encontrado != null) {
-            encontrado.setNombre(nuevoNombre);
-            encontrado.setDescripcion(nuevaDescripcion);
-            encontrado.setPrecio(nuevoPrecio);
-            encontrado.setStock(nuevoStock);
-            encontrado.setImagen(nuevaImagen);
-            encontrado.setDisponible(nuevaDisponibilidad);
-            encontrado.setCategoria(nuevaCategoria);
-            return true;
+        if (encontrado != null && !encontrado.isEliminado()) {
+            encontrado.setNombre(nombre);
+            encontrado.setDescripcion(descripcion);
+            encontrado.setPrecio(precio);
+            encontrado.setImagen(imagen);
+            encontrado.setCategoria(categoria);
+            encontrado.setStock(stock);
+            if (stock > 0) {
+                encontrado.setDisponible(true);
+            } else {
+                encontrado.setDisponible(false);
+            }
         }
-        return false;
     }
 
     public boolean eliminar(Long id) {
