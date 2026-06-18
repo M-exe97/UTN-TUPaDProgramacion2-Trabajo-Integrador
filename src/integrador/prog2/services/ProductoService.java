@@ -25,7 +25,7 @@ public class ProductoService {
         List<Producto> activos = new ArrayList<>();
         for (int i = 0; i < this.productos.size(); i++) {
             Producto prod = this.productos.get(i);
-            if (prod.isEliminado()) {
+            if (!prod.isEliminado()) {
                 activos.add(prod);
             }
         }

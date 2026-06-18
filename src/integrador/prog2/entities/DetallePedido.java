@@ -9,7 +9,7 @@ public class DetallePedido extends Base{
         super();
     }
 
-    public DetallePedido(Long id, int cantidad, double subtotal, Producto producto) {
+    public DetallePedido(long id, int cantidad, double subtotal, Producto producto) {
         super(id);
         this.cantidad = cantidad;
         this.subtotal = subtotal;

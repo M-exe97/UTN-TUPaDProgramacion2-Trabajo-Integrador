@@ -74,12 +74,12 @@ public class Usuario extends Base{
 
     @Override
     public String toString() {
-        String estadoTexo;
+        String estadoTexto;
         if (this.isEliminado()) {
-            estadoTexo = "Eliminado";
+            estadoTexto = "Eliminado";
         } else {
-            estadoTexo = "Activo";
+            estadoTexto = "Activo";
         }
-        return "ID: " + this.getId() + "\nNombre: " + this.nombre + " " + this.apellido + "\nMail: " + this.mail + "\nRol: " + this.rol + "\nEstado: " + estadoTexo;
+        return "ID: " + this.getId() + "\nNombre: " + this.nombre + " " + this.apellido + "\nMail: " + this.mail + "\nRol: " + this.rol + "\nEstado: " + estadoTexto;
     }
 }

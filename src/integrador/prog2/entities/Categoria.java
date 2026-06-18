@@ -32,12 +32,12 @@ public class Categoria extends Base{
 
     @Override
     public String toString() {
-        String estadoTexo;
+        String estadoTexto;
         if (this.isEliminado()) {
-            estadoTexo = "Eliminado";
+            estadoTexto = "Eliminado";
         } else {
-            estadoTexo = "Activo";
+            estadoTexto = "Activo";
         }
-        return "ID: " + this.getId() + "\nCategoria: " + this.nombre + "\nDescripcion: " + this.descripcion + "\nEstado: " + estadoTexo;
+        return "ID: " + this.getId() + "\nCategoria: " + this.nombre + "\nDescripcion: " + this.descripcion + "\nEstado: " + estadoTexto;
     }
 }

@@ -97,9 +97,9 @@ public class Main {
                     break;
                 case "2":
                     System.out.println("\n=== NUEVA CATEGORIA ===");
-                    System.out.println("Ingresa el nombre de la categoria: ");
+                    System.out.print("Ingresa el nombre de la categoria: ");
                     String nombre = scanner.nextLine();
-                    System.out.println("Ingresa la descripcion de la categoria: ");
+                    System.out.print("Ingresa la descripcion de la categoria: ");
                     String descripcion = scanner.nextLine();
 
                     if (nombre.isEmpty() || descripcion.isEmpty()) {
@@ -118,9 +118,9 @@ public class Main {
                         System.out.println("Error: El ID no existe o la categoria ya fue eliminada");
                     } else {
                         System.out.println("Datos actuales: " + categoriaEditar.toString());
-                        System.out.println("Nuevo nombre (o deja en blanco para no cambiar): ");
+                        System.out.print("Nuevo nombre (o deja en blanco para no cambiar): ");
                         String nuevoNombre = scanner.nextLine();
-                        System.out.println("Nueva descripcion (o deja en blanco para no cambiar): ");
+                        System.out.print("Nueva descripcion (o deja en blanco para no cambiar): ");
                         String nuevaDescripcion = scanner.nextLine();
 
                         if (nuevoNombre.isEmpty()) {
@@ -193,34 +193,42 @@ public class Main {
                     break;
                 case "2":
                     System.out.println("\n=== NUEVO USUARIO ===");
-                    System.out.println("Ingresa el nombre: ");
+                    System.out.print("Ingresa el nombre: ");
                     String nombre = scanner.nextLine();
-                    System.out.println("Ingresa el apellido: ");
+                    System.out.print("Ingresa el apellido: ");
                     String apellido = scanner.nextLine();
-                    System.out.println("Ingresa el mail: ");
+                    System.out.print("Ingresa el email: ");
                     String mail = scanner.nextLine();
-                    System.out.println("Ingresa el celular: ");
-                    String celular = scanner.nextLine();
-                    System.out.println("Ingresa la contraseña: ");
+                    System.out.print("Ingresa la contraseña: ");
                     String contrasenia = scanner.nextLine();
 
-                    System.out.println("Selecciona el Rol (1: ADMIN, 2: USUARIO): ");
-                    String rolEntrada = scanner.nextLine();
-                    Rol rolSeleccionado = Rol.USUARIO;
-                    if (rolEntrada.equals("1")) {
-                        rolSeleccionado = Rol.ADMIN;
+                    if (nombre.isEmpty() || apellido.isEmpty() || mail.isEmpty() || contrasenia.isEmpty()) {
+                        System.out.println("Error: El nombre, apellido, email y contraseña son obligatorios");
+                        break;
                     }
-                    if (nombre.isEmpty() || mail.isEmpty()) {
-                        System.out.println("Error: El nombre y el mail no pueden estar vacios");
-                    } else {
-                        try {
-                            Usuario nuevo = usuarioService.crear(nombre, apellido, mail, celular, contrasenia, rolSeleccionado);
-                            if (nuevo != null) {
-                                System.out.println("Usuario creado correctamente. ID: " + nuevo.getId());
-                            }
-                        } catch (EmailDuplicadoException e ) {
-                            System.out.println("Error al registrar: " + e.getMessage());
+
+                    System.out.print("Ingresa el celular (Opcional): ");
+                    String celular = scanner.nextLine();
+
+                    Rol rolSeleccionado = null;
+                    while (rolSeleccionado == null) {
+                        System.out.print("Selecciona el Rol (1: ADMIN, 2: USUARIO): ");
+                        String rolEntrada = scanner.nextLine();
+                        if (rolEntrada.equals("1")) {
+                            rolSeleccionado = Rol.ADMIN;
+                        } else if (rolEntrada.equals("2")) {
+                            rolSeleccionado = Rol.USUARIO;
+                        } else {
+                            System.out.println("Error: Opcion invalida. Ingresa 1 o 2");
                         }
+                    }
+                    try {
+                        Usuario nuevo = usuarioService.crear(nombre, apellido, mail, celular, contrasenia, rolSeleccionado);
+                        if (nuevo != null) {
+                            System.out.println("Usuario creado correctamente. ID: " + nuevo.getId());
+                        }
+                    } catch (EmailDuplicadoException e ) {
+                        System.out.println("Error al registrar: " + e.getMessage());
                     }
                     break;
                 case "3":
@@ -232,15 +240,15 @@ public class Main {
                         System.out.println("Error: El ID no existe o el usuario ya fue eliminado");
                     } else {
                         System.out.println("Datos actuales: " + usuarioEditar.toString());
-                        System.out.println("Nuevo nombre (o deja en blanco para mantener): ");
+                        System.out.print("Nuevo nombre (o deja en blanco para mantener): ");
                         String nuevoNombre = scanner.nextLine();
-                        System.out.println("Nuevo apellido (o deja en blanco para mantener): ");
+                        System.out.print("Nuevo apellido (o deja en blanco para mantener): ");
                         String nuevoApellido = scanner.nextLine();
-                        System.out.println("Nuevo mail (o deja en blanco para mantener): ");
+                        System.out.print("Nuevo mail (o deja en blanco para mantener): ");
                         String nuevoMail = scanner.nextLine();
-                        System.out.println("Nuevo celular (o deja en blanco para mantener): ");
+                        System.out.print("Nuevo celular (o deja en blanco para mantener): ");
                         String nuevoCelular = scanner.nextLine();
-                        System.out.println("Nueva contraseña (o deja en blanco para mantener): ");
+                        System.out.print("Nueva contraseña (o deja en blanco para mantener): ");
                         String nuevaContrasenia = scanner.nextLine();
 
                         if (nuevoNombre.isEmpty()) {
@@ -317,20 +325,23 @@ public class Main {
                     break;
                 case "2":
                     System.out.println("\n=== NUEVO PRODUCTO ===");
-                    System.out.println("Ingresa el nombre del producto: ");
+                    System.out.print("Ingresa el nombre del producto: ");
                     String nombre = scanner.nextLine();
-                    System.out.println("Ingresa la descripcion: ");
+                    System.out.print("Ingresa la descripcion: ");
                     String descripcion = scanner.nextLine();
+                    if (nombre.isEmpty() || descripcion.isEmpty()) {
+                        System.out.println("Error: El nombre y la descripcion no pueden estar vacios");
+                        break;
+                    }
                     double precio = leerDouble(scanner, "Ingresa el precio: ");
                     int stock = leerEntero(scanner, "Ingresa el stock inicial: ");
-                    System.out.println("Ingresa la ruta o nombre de la imagen: ");
+                    System.out.print("Ingresa la ruta o nombre de la imagen: ");
                     String imagen = scanner.nextLine();
                     Long idCategoria = leerLong(scanner, "Ingresa el ID de la categoria: ");
                     Categoria categoria = categoriaService.buscarPorId(idCategoria);
 
-                    if (nombre.isEmpty()) {
-                        System.out.println("Error: El nombre no puede estar vacio");
-                    } else if (categoria == null || categoria.isEliminado()) {
+
+                    if (categoria == null || categoria.isEliminado()) {
                         System.out.println("Error: La categoria no existe o fue eliminada");
                     } else {
                         Producto nuevo = productoService.crear(nombre, descripcion, precio, stock, imagen, true, categoria);
@@ -346,15 +357,15 @@ public class Main {
                         System.out.println("Error: El ID no existe o el producto ya fue eliminado");
                     } else {
                         System.out.println("Datos actuales: " + productoEditar.toString());
-                        System.out.println("Nuevo nombre (o deja en blanco para mantener): ");
+                        System.out.print("Nuevo nombre (o deja en blanco para mantener): ");
                         String nuevoNombre = scanner.nextLine();
-                        System.out.println("Nueva descripcion (o deja en blanco para mantener): ");
+                        System.out.print("Nueva descripcion (o deja en blanco para mantener): ");
                         String nuevaDescripcion = scanner.nextLine();
-                        System.out.println("Nuevo precio (o deja en blanco para mantener): ");
+                        System.out.print("Nuevo precio (o deja en blanco para mantener): ");
                         String nuevoPrecio = scanner.nextLine();
-                        System.out.println("Nuevo stock (o deja en blanco para mantener): ");
+                        System.out.print("Nuevo stock (o deja en blanco para mantener): ");
                         String nuevoStock = scanner.nextLine();
-                        System.out.println("Nueva imagen (o deja en blanco para mantener): ");
+                        System.out.print("Nueva imagen (o deja en blanco para mantener): ");
                         String nuevaImagen = scanner.nextLine();
 
                         if (nuevoNombre.isEmpty()) {
@@ -465,13 +476,19 @@ public class Main {
                     }
 
                     if (!idProductos.isEmpty()) {
-                        System.out.println("Selecciona la Forma de Pago (1: EFECTIVO, 2: TARJETA, 3: TRANSFERENCIA): ");
-                        String pagoEntrada = scanner.nextLine();
-                        FormaPago formaPago = FormaPago.EFECTIVO;
-                        if (pagoEntrada.equals("2")) {
-                            formaPago = FormaPago.TARJETA;
-                        } else if (pagoEntrada.equals("3")) {
-                            formaPago = FormaPago.TRANSFERENCIA;
+                        FormaPago formaPago = null;
+                        while (formaPago == null) {
+                            System.out.print("Selecciona la Forma de Pago (1: EFECTIVO, 2: TARJETA, 3: TRANSFERENCIA): ");
+                            String pagoEntrada = scanner.nextLine();
+                            if (pagoEntrada.equals("1")) {
+                                formaPago = FormaPago.EFECTIVO;
+                            } else if (pagoEntrada.equals("2")) {
+                                formaPago = FormaPago.TARJETA;
+                            } else if (pagoEntrada.equals("3")) {
+                                formaPago = FormaPago.TRANSFERENCIA;
+                            } else {
+                                System.out.println("Error: Opcion invalida. Ingresa 1, 2 o 3");
+                            }
                         }
                         try {
                             Pedido nuevoPedido = pedidoService.crearPedido(idUsuario, idProductos, cantidades, formaPago);
@@ -486,6 +503,7 @@ public class Main {
                     } else {
                         System.out.println("Pedido cancelado: No se seleccionaron productos validos");
                     }
+                    break;
                 case "3":
                     System.out.println("\n=== ACTUALIZAR ESTADO Y PAGO ===");
                     Long idPedido = leerLong(scanner, "Ingresa el ID del pedido: ");
@@ -495,32 +513,36 @@ public class Main {
                         System.out.println("Error: El ID no existe o el pedido ya fue eliminado");
                     } else {
                         System.out.println("Estado actual: " + pedido.getEstado() + "\nPago actual: " + pedido.getFormaPago());
-                        System.out.println("Selecciona el nuevo estado (1: PENDIENTE, 2: CONFIRMADO, 3: TERMINADO, 4: CANCELADO): ");
-                        String estadoEntrada = scanner.nextLine();;
-                        Estado nuevoEstado = pedido.getEstado();
-                        if (estadoEntrada.equals("1")) {
-                            nuevoEstado = Estado.PENDIENTE;
+                        Estado nuevoEstado = null;
+                        while (nuevoEstado == null) {
+                            System.out.print("Selecciona el nuevo estado (1: PENDIENTE, 2: EN PROCESO, 3: ENTREGADO, 4: CANCELADO): ");
+                            String estadoEntrada = scanner.nextLine();
+                            if (estadoEntrada.equals("1")) {
+                                nuevoEstado = Estado.PENDIENTE;
+                            } else if (estadoEntrada.equals("2")) {
+                                nuevoEstado = Estado.CONFIRMADO;
+                            } else if (estadoEntrada.equals("3")) {
+                                nuevoEstado = Estado.TERMINADO;
+                            } else if (estadoEntrada.equals("4")) {
+                                nuevoEstado = Estado.CANCELADO;
+                            } else {
+                                System.out.println("Error: Opcion invalida. Ingresa 1, 2, 3 o 4");
+                            }
                         }
-                        if (estadoEntrada.equals("2")) {
-                            nuevoEstado = Estado.CONFIRMADO;
-                        }
-                        if (estadoEntrada.equals("3")) {
-                            nuevoEstado = Estado.TERMINADO;
-                        }
-                        if (estadoEntrada.equals("4")) {
-                            nuevoEstado = Estado.CANCELADO;
-                        }
-                        System.out.println("Selecciona la forma de pago (1: EFECTIVO, 2: TARJETA, 3: TRANSFERENCIA): ");
-                        String pagoEntrada = scanner.nextLine();
-                        FormaPago formaPago = pedido.getFormaPago();
-                        if (pagoEntrada.equals("1")) {
-                            formaPago = FormaPago.EFECTIVO;
-                        }
-                        if (pagoEntrada.equals("2")) {
-                            formaPago = FormaPago.TARJETA;
-                        }
-                        if (pagoEntrada.equals("3")) {
-                            formaPago = FormaPago.TRANSFERENCIA;
+
+                        FormaPago formaPago = null;
+                        while (formaPago == null) {
+                            System.out.print("Selecciona la forma de pago (1: EFECTIVO, 2: TARJETA, 3: TRANSFERENCIA): ");
+                            String pagoEntrada = scanner.nextLine();
+                            if (pagoEntrada.equals("1")) {
+                                formaPago = FormaPago.EFECTIVO;
+                            } else if (pagoEntrada.equals("2")) {
+                                formaPago = FormaPago.TARJETA;
+                            } else if (pagoEntrada.equals("3")) {
+                                formaPago = FormaPago.TRANSFERENCIA;
+                            } else {
+                                System.out.println("Error: Opcion invalida. Ingresa 1, 2 o 3");
+                            }
                         }
                         pedidoService.actualizarEstadoYPago(idPedido, nuevoEstado, formaPago);
                         System.out.println("Pedido actualizado correctamente");

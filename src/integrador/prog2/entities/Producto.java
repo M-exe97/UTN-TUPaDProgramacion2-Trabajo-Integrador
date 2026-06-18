@@ -87,7 +87,7 @@ public class Producto extends Base{
         if (this.isEliminado()) {
             estadoTexto = "Eliminado";
         } else {
-            estadoTexto = "activo";
+            estadoTexto = "Activo";
         }
 
         String disponibilidadTexto;
